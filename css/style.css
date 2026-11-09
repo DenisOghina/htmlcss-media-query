@@ -57,7 +57,7 @@ a {
 /* Il menu e l'icona */
 .left-nav {
 	list-style-type: none;
-	display: flex;
+	display: none;
 	gap: 16px;
 }
 
@@ -73,12 +73,6 @@ a {
 	gap: 24px;
 }
 
-/* Le colonne si adattano da sole: card a un terzo, a capo sotto i 350px */
-.card {
-	flex-basis: calc(100% / 3 - 48px / 3);
-	min-width: 350px;
-}
-
 /* Stile delle card */
 .card {
 	position: relative;
@@ -87,8 +81,16 @@ a {
 	border-radius: 8px;
 	padding: 20px;
 	min-height: 200px;
-	flex-grow: 1;
+	/* flex-grow: 1; - tolto per il bonus */
 }
+
+/* Bonus: a 1100px non si muove nessuna card perché dal breakpoint 876px il flex-basis
+   le divide in 3 colonne, e con 6 card le due righe sono piene: non avanza
+   spazio, quindi justify-content non ha niente da distribuire.
+   A 1300px, (dal breakpoint 1200px) il flex-basis le divide in 4 colonne: la prima riga
+   è piena, mentre le altre due card vanno a capo e restano da sole nell'ultima riga.
+   Senza flex-grow non si allargano per riempire lo spazio che avanza, quindi
+   è justify-content (in questo caso center) a decidere dove metterle. */
 
 .badge {
 	position: absolute;
@@ -135,4 +137,37 @@ a {
 	border-radius: 8px;
 	font-weight: bold;
 	text-align: center;
+	order: -1;
+}
+
+@media screen and (min-width: 576px) {
+	.bi-list {
+		display: none;
+	}
+
+	.left-nav {
+		display: flex;
+	}
+}
+
+@media screen and (min-width: 676px) {
+	.card {
+		flex-basis: calc(50% - 24px / 2);
+	}
+}
+
+@media screen and (min-width: 876px) {
+	.card {
+		flex-basis: calc(100% / 3 - (24px * 2) / 3);
+	}
+
+	.banner {
+		order: 1;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.card {
+		flex-basis: calc(25% - (24px * 3) / 4);
+	}
 }
